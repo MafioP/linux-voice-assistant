@@ -93,6 +93,9 @@ class ServerState:
 
     stt_start_command: str = None
     stt_stop_command: str = None
+    
+    tts_start_command: str = None
+    tts_stop_command: str = None
 
     def save_preferences(self) -> None:
         """Save preferences as JSON."""

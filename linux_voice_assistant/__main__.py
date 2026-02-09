@@ -125,6 +125,18 @@ async def main() -> None:
         help="Command to run when the user stops speaking",
     )
     parser.add_argument(
+        "--tts-start-command",
+        default=None,
+        type=str,
+        help="Command to run when the assistant starts speaking",
+    )
+    parser.add_argument(
+        "--tts-stop-command",
+        default=None,
+        type=str,
+        help="Command to run when the assistant stops speaking",
+    )
+    parser.add_argument(
         "--debug", action="store_true", help="Print DEBUG messages to console"
     )
     args = parser.parse_args()
@@ -269,6 +281,8 @@ async def main() -> None:
         download_dir=args.download_dir,
         stt_start_command=args.stt_start_command,
         stt_stop_command=args.stt_stop_command,
+        tts_start_command=args.tts_start_command,
+        tts_stop_command=args.tts_stop_command,
     )
 
     if args.enable_thinking_sound:

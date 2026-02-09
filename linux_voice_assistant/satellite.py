@@ -218,6 +218,8 @@ class VoiceSatelliteProtocol(APIServer):
             self._continue_conversation = False
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_STT_START:
             run_command(self.state.stt_start_command)
+        elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_TTS_START:
+            run_command(self.state.tts_start_command)
         elif (
             event_type == VoiceAssistantEventType.VOICE_ASSISTANT_INTENT_START
             and self.state.thinking_sound_enabled
@@ -237,6 +239,8 @@ class VoiceSatelliteProtocol(APIServer):
             self._is_streaming_audio = False
             if event_type == VoiceAssistantEventType.VOICE_ASSISTANT_STT_END:
                 run_command(self.state.stt_stop_command)
+            if event_type == VoiceAssistantEventType.VOICE_ASSISTANT_TTS_END:
+                run_command(self.state.tts_stop_command)
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_INTENT_PROGRESS:
             if data.get("tts_start_streaming") == "1":
                 # Start streaming early
