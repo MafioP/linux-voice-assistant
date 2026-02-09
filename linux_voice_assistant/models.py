@@ -91,6 +91,9 @@ class ServerState:
     muted: bool = False
     connected: bool = False
 
+    stt_start_command: str = None
+    stt_stop_command: str = None
+
     def save_preferences(self) -> None:
         """Save preferences as JSON."""
         _LOGGER.debug("Saving preferences: %s", self.preferences_path)
