@@ -31,7 +31,7 @@ def run_command(command: Optional[str]) -> None:
     _LOGGER.debug("Output: %s", result.stdout.strip())
     
 def start_spotify() -> None:
-    run_command("playerctl play")
+    run_command("playerctl play-pause")
     run_command("playerctl -l")
     return
 
