@@ -26,8 +26,9 @@ def run_command(command: Optional[str]) -> None:
 
     _LOGGER.debug("Running %s", command)
 
-    subprocess.call(command, shell=True)
-
+    result = subprocess.run(command, shell=True, capture_output=True)
+    print(result.stdout.strip())
+    
 def start_spotify() -> None:
     run_command("playerctl play")
     return
