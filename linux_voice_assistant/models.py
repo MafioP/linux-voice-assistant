@@ -98,7 +98,7 @@ class ServerState:
     tts_stop_command: str = None
     
     using_local_spotify: bool = False
-    spotify_status: str = None
+    spotify_was_playing: bool = False
 
     def save_preferences(self) -> None:
         """Save preferences as JSON."""

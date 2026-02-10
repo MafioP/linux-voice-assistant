@@ -5,6 +5,7 @@ from collections.abc import Callable
 from threading import Lock
 from typing import List, Optional, Union
 
+from linux_voice_assistant.util import get_spotify_status, start_spotify, stop_spotify
 from mpv import MPV
 
 _LOGGER = logging.getLogger(__name__)
@@ -62,9 +63,15 @@ class MpvMediaPlayer:
         self._playlist.clear()
 
     def duck(self) -> None:
+        if (get_spotify_status() == "Playing" and self.state.using_local_spotify):
+                self.state.spotify_was_playing = True;
+                stop_spotify()
         self.player.volume = self._duck_volume
 
     def unduck(self) -> None:
+        if (self.state.spotify_was_playing and self.state.using_local_spotify):
+                start_spotify()
+                self.state.spotify_was_playing = False
         self.player.volume = self._unduck_volume
 
     def set_volume(self, volume: int) -> None:

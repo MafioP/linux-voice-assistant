@@ -29,16 +29,16 @@ def run_command(command: Optional[str]) -> None:
     subprocess.call(command, shell=True)
 
 def start_spotify() -> None:
-    run_command("playerctl -p spotifyd play")
+    run_command("playerctl play")
     return
 
 def stop_spotify() -> None:
-    run_command("playerctl -p spotifyd pause")
+    run_command("playerctl pause")
     return
 
 def get_spotify_status() -> str:
     result = subprocess.run(
-        ["playerctl", "-p", "spotifyd", "status"],
+        ["playerctl", "status"],
         capture_output=True,
         text=True
     )
