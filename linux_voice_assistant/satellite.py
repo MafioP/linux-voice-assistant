@@ -11,7 +11,7 @@ from collections.abc import Iterable
 from typing import Dict, Optional, Set, Union
 from urllib.parse import urlparse, urlunparse
 from urllib.request import urlopen
-from .util import get_spotify_status, run_command, start_spotify, stop_spotify
+from .util import run_command
 
 # pylint: disable=no-name-in-module
 from aioesphomeapi.api_pb2 import (  # type: ignore[attr-defined]
@@ -457,11 +457,15 @@ class VoiceSatelliteProtocol(APIServer):
 
     def duck(self) -> None:
         _LOGGER.debug("Ducking music")
-        self.state.music_player.duck()
+        new_status = self.state.music_player.duck(using_local_spotify=self.state.using_local_spotify)
+        if (new_status):
+            self.state.spotify_was_playing = True
 
     def unduck(self) -> None:
         _LOGGER.debug("Unducking music")
-        self.state.music_player.unduck()
+        self.state.music_player.unduck(spotify_was_playing=self.state.spotify_was_playing, using_local_spotify=self.state.using_local_spotify)
+        if (self.state.using_local_spotify):
+            self.state.spotify_was_playing = False
 
     def _tts_finished(self) -> None:
         self.state.active_wake_words.discard(self.state.stop_word.id)

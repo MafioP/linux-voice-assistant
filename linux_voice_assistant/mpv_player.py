@@ -5,6 +5,8 @@ from collections.abc import Callable
 from threading import Lock
 from typing import List, Optional, Union
 
+from sympy import false
+
 from linux_voice_assistant.util import get_spotify_status, start_spotify, stop_spotify
 from mpv import MPV
 
@@ -62,17 +64,16 @@ class MpvMediaPlayer:
         self.player.stop()
         self._playlist.clear()
 
-    def duck(self) -> None:
-        if (get_spotify_status() == "Playing" and self.state.using_local_spotify):
-                self.state.spotify_was_playing = True;
-                stop_spotify()
+    def duck(self, using_local_spotify=False) -> bool:
         self.player.volume = self._duck_volume
+        if (get_spotify_status() == "Playing" and using_local_spotify):
+            stop_spotify()
+            return True
 
-    def unduck(self) -> None:
-        if (self.state.spotify_was_playing and self.state.using_local_spotify):
-                start_spotify()
-                self.state.spotify_was_playing = False
+    def unduck(self, spotify_was_playing=False, using_local_spotify=False) -> None:
         self.player.volume = self._unduck_volume
+        if (spotify_was_playing and using_local_spotify):
+                start_spotify()
 
     def set_volume(self, volume: int) -> None:
         volume = max(0, min(100, volume))
