@@ -5,8 +5,6 @@ from collections.abc import Callable
 from threading import Lock
 from typing import List, Optional, Union
 
-from sympy import false
-
 from linux_voice_assistant.util import get_spotify_status, start_spotify, stop_spotify
 from mpv import MPV
 
