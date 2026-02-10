@@ -11,7 +11,7 @@ from collections.abc import Iterable
 from typing import Dict, Optional, Set, Union
 from urllib.parse import urlparse, urlunparse
 from urllib.request import urlopen
-from .util import run_command
+from .util import get_spotify_status, run_command, start_spotify, stop_spotify
 
 # pylint: disable=no-name-in-module
 from aioesphomeapi.api_pb2 import (  # type: ignore[attr-defined]
@@ -216,7 +216,11 @@ class VoiceSatelliteProtocol(APIServer):
             self._tts_url = data.get("url")
             self._tts_played = False
             self._continue_conversation = False
+            self.state.spotify_status = get_spotify_status()
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_STT_START:
+            if (self.state.spotify_status == "Playing"):
+                self.state.spotify_status == "Was_Playing"
+                stop_spotify()
             run_command(self.state.stt_start_command)
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_TTS_START:
             run_command(self.state.tts_start_command)
@@ -253,6 +257,9 @@ class VoiceSatelliteProtocol(APIServer):
             self.play_tts()
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_RUN_END:
             self._is_streaming_audio = False
+            if (self.state.spotify_status == "Was_Playing"):
+                start_spotify()
+                self.state.spotify_status = None
             if not self._tts_played:
                 self._tts_finished()
 

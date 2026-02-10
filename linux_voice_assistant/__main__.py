@@ -137,6 +137,12 @@ async def main() -> None:
         help="Command to run when the assistant stops speaking",
     )
     parser.add_argument(
+        "--use-local-spotify",
+        default=None,
+        type=bool,
+        help="Flag to enable local spotify processing with playerctl",
+    )
+    parser.add_argument(
         "--debug", action="store_true", help="Print DEBUG messages to console"
     )
     args = parser.parse_args()
@@ -283,6 +289,7 @@ async def main() -> None:
         stt_stop_command=args.stt_stop_command,
         tts_start_command=args.tts_start_command,
         tts_stop_command=args.tts_stop_command,
+        use_local_spotify=args.use_local_spotify
     )
 
     if args.enable_thinking_sound:
