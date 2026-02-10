@@ -138,8 +138,7 @@ async def main() -> None:
     )
     parser.add_argument(
         "--use-local-spotify",
-        default=None,
-        type=bool,
+        action="store_true",
         help="Flag to enable local spotify processing with playerctl",
     )
     parser.add_argument(
