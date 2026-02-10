@@ -1,6 +1,7 @@
 """Utility methods."""
 
 import re
+import os
 import subprocess
 import uuid
 import logging
@@ -31,7 +32,11 @@ def run_command(command: Optional[str]) -> None:
     _LOGGER.debug("Output: %s", result.stdout.strip())
     
 def start_spotify() -> None:
-    run_command("playerctl play-pause")
+    import time
+    time.sleep(0.2)
+    spotId = subprocess.run(["playerctl", "-l"], text=True, capture_output=True)
+    decodedId = spotId.stdout.strip().splitlines()[0]
+    run_command(f"playerctl -p {decodedId} play")  # Use string instead
     run_command("playerctl -l")
     return
 
