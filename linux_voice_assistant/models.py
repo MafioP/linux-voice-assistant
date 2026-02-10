@@ -97,6 +97,7 @@ class ServerState:
     tts_start_command: str = None
     tts_stop_command: str = None
     
+    using_local_spotify: bool = False
     spotify_status: str = None
 
     def save_preferences(self) -> None:
